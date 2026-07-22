@@ -12,6 +12,27 @@
 <title>Sivakasi Crackers | SM Anu Crackers | Sivakasi Online Fireworks Shopping | smanucrackers| சிவகாசி பட்டாசுகள்</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Lato:wght@300;400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
+  #preloader {
+  position: fixed;
+  inset: 0;
+  background: #0A0A0A;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 215, 0, 0.2);
+  border-top-color: #FFD700;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { 
+  100% { transform: rotate(360deg); } 
+}
 :root {
   --gold: #FFD700;
   --gold-dark: #B8860B;
