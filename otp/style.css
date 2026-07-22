@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    min-height: 100vh;
+    background-color: rgb(52, 23, 239);
+}
+
+.container {
+    height: 400px;
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    position: relative;
+}
+
+.container h1 {
+    text-transform: capitalize;
+    margin-bottom: 30px;
+}
+
+.container span i {
+    position: absolute;
+    top: 22px;
+    right: 40px;
+}
+
+.p-container {
+    width: 100%;
+    height: 50px;
+    background-color: #90ee90;
+    border-radius: 10px;
+    border: 1px solid green;
+}
+
+.p-container p {
+    text-wrap: nowrap;
+    padding-top: 15px;
+}
+
+.container .send-otp button {
+    margin-top: 40px;
+    width: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: 0.1px solid gray;
+}
+
+.container .send-otp input::placeholder {
+    letter-spacing: 1px;
+    font-size: 14px;
+    color: gray;
+    text-align: center;
+}
+
+.otp-box {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.otp-box input {
+    width: 40px;
+    height: 40px;
+    border: 0.2px solid gray;
+    border-radius: 4px;
+    margin: 10px;
+    font-size: 18px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.send-otp button {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    background-color: rgb(52, 23, 239);
+    color: white;
+}
+
+.otp-box input::-webkit-outer-spin-button,
+.otp-box input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.otp-box input:focus {
+    outline: none;
+    border: 0.2px solid rgb(255, 183, 0);
+    caret-color: transparent;
+}
+
+.ending button {
+    border: none;
+    width: 100px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(52, 23, 239);
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    ;
+}
+
+.ending button:hover,
+.send-otp button:hover {
+    background-color: rgb(141, 3, 247);
+}

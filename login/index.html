@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <div class="page-container">
+      <h1>
+        login <span><i class="bx bx-arrow-to-right"></i></span>
+      </h1>
+      <form action="#">
+        <div class="name">
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter Email"
+            required
+          /><span><i class="bx bx-user"></i> </span>
+        </div>
+        <div class="password">
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+          /><span><i class="bx bx-lock"></i> </span>
+        </div>
+        <div class="links">
+          <label><input type="checkbox" name="" id="" />Remember Me</label>
+          <a href="otp.html">forget password</a>
+        </div>
+      </form>
+      <div class="submit">
+        <button type="submit" onclick="result(event)">sign in</button>
+      </div>
+      <div class="ending">
+        <p>I don't have account? <a href="/loginsigninotp/signup/signup.html">Sign up</a></p>
+      </div>
+    </div>
+  </body>
+</html>
