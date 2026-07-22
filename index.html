@@ -2551,6 +2551,21 @@ footer {
 </div>
 
 <script>
+  function hidePreloader() {
+  const preloader = document.getElementById('preloader');
+  if (preloader && preloader.style.display !== 'none') {
+    preloader.style.opacity = '0';
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 500);
+  }
+}
+
+// 1. Hide when the page is fully loaded
+window.addEventListener('load', hidePreloader);
+
+// 2. SAFETY TIMER: Force hide after 3 seconds, even if some images are slow
+setTimeout(hidePreloader, 3000);
 // ============================================================
 // EMAILJS CONFIG — Emails the generated PDF estimate to
 // smanucrackerssivakasi@gmail.com whenever a customer submits an order.
