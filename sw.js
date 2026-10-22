@@ -1,6 +1,6 @@
 // Simple service worker: always tries the internet first (so new prices show),
 // and falls back to the saved copy when offline.
-const CACHE = 'smanu-v1';
+const CACHE = 'smanu-v2';
 const FILES = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -15,7 +15,8 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
+     if (e.request.method !== 'GET') return;
+   if (new URL(e.request.url).origin !== self.location.origin) return;
   e.respondWith(
     fetch(e.request).then(res => {
       const copy = res.clone();
