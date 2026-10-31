@@ -2752,7 +2752,7 @@ footer {
 //   6. Paste all 3 values below, replacing the YOUR_... placeholders.
 // ============================================================
 const EMAILJS_CONFIG = {
-  publicKey:  'Tag5xSKt-eBclBvg',
+  publicKey:  '89TaVUuaPQzIMjhiQ',
   serviceId:  'service_og543li',
   templateId: 'template_cyzdvgf'
 };
@@ -3337,9 +3337,8 @@ function submitOrder() {
   
   // Generate downloadable PDF estimate with logo, address & phone, then email it to the shop
   const pdfResult = generateEstimatePDF(name, mobile, email, address, city, cartItems, grandTotal, orderNo, isEdit);
-  if (pdfResult) {
-    sendEstimatePDFEmail(name, mobile, email, address, city, cartItems, grandTotal, pdfResult.pdfBase64, pdfResult.fileName, orderNo, isEdit);
-  }
+  sendEstimatePDFEmail(name, mobile, email, address, city, cartItems, grandTotal,
+    pdfResult ? pdfResult.pdfBase64 : '', pdfResult ? pdfResult.fileName : '', orderNo, isEdit);
   
   document.getElementById('success-order-no').textContent = orderNo;
   document.getElementById('success-order-note').textContent = isEdit ? 'Your order has been updated.' : 'Save this Order No — you can search it any time to edit your order, even without an account.';
@@ -3351,14 +3350,25 @@ function submitOrder() {
 function generateEstimatePDF(name, mobile, email, address, city, cartItems, total, orderNo, isEdit) {
   try {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    const doc = new jsPDF({ compress: true });
     const BOTTOM = 282;
     const money = n => 'Rs.' + Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 });
 
     // ---- Header: logo + shop details (bigger text) ----
+    // Logo is shrunk to a small picture so the PDF stays tiny (the email service rejects big attachments)
     const logoEl = document.querySelector('.logo-img');
-    if (logoEl && logoEl.src) {
-      try { doc.addImage(logoEl.src, 'JPEG', 15, 10, 26, 26); } catch (e) {}
+    if (logoEl) {
+      try {
+        const cv = document.createElement('canvas');
+        cv.width = 90; cv.height = 90;
+        const cx = cv.getContext('2d');
+        cx.fillStyle = '#ffffff';
+        cx.fillRect(0, 0, 90, 90);
+        const nw = logoEl.naturalWidth || 90, nh = logoEl.naturalHeight || 90;
+        const sc = Math.min(90 / nw, 90 / nh);
+        cx.drawImage(logoEl, (90 - nw * sc) / 2, (90 - nh * sc) / 2, nw * sc, nh * sc);
+        doc.addImage(cv.toDataURL('image/jpeg', 0.6), 'JPEG', 15, 10, 26, 26);
+      } catch (e) {}
     }
     doc.setFont(undefined, 'bold');
     doc.setFontSize(20);
@@ -3528,7 +3538,7 @@ function sendEstimatePDFEmail(name, mobile, email, address, city, cartItems, tot
     return;
   }
 
-  emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+  const params = {
     to_email: 'smanucrackerssivakasi@gmail.com',
     from_name: name,
     order_no: orderNo || '',
@@ -3536,10 +3546,27 @@ function sendEstimatePDFEmail(name, mobile, email, address, city, cartItems, tot
     customer_email: email || 'Not provided',
     address: address + ', ' + city,
     total: 'Rs.' + total.toLocaleString('en-IN', { maximumFractionDigits: 2 }),
-    order_details: orderDetails,
+    order_details: orderDetails
+  };
+  const opts = { publicKey: EMAILJS_CONFIG.publicKey };
+  const sendPlain = () => {
+    params.order_details = orderDetails + '\n(PDF not attached - the full order is saved on the website.)';
+    return emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, params, opts)
+      .then(r => console.log('Order email sent (without PDF)', r.status))
+      .catch(err => console.error('Order email notification failed:', err));
+  };
+
+  if (!pdfBase64) { sendPlain(); return; }          // PDF could not be made: still tell the shop
+
+  emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, Object.assign({}, params, {
     pdf_attachment: 'data:application/pdf;base64,' + pdfBase64,
     pdf_filename: fileName
-  }, { publicKey: EMAILJS_CONFIG.publicKey }).catch(err => console.error('Order email notification failed:', err));
+  }), opts)
+    .then(r => console.log('Order email sent', r.status))
+    .catch(err => {
+      console.error('Order email (with PDF) failed, trying without the PDF:', err);
+      sendPlain();
+    });
 }
 
 function sendContactWA() {
